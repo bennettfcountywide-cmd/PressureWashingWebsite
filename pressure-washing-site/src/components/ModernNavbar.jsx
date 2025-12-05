@@ -63,7 +63,7 @@ const ModernNavbar = () => {
       >
         <div className="navbar-container">
           <Link to="/" className="navbar-brand">
-            <img src="/logos/logoNonCircle.png" alt="CountyWide Pressure Washing" className="brand-logo" />
+            <img src="/logos/logoCircle.png" alt="CountyWide Pressure Washing" className="brand-logo" />
           </Link>
 
           <div className="admin-nav-items">
@@ -93,7 +93,7 @@ const ModernNavbar = () => {
       <div className="navbar-container">
         <Link to="/" className="navbar-brand">
           <motion.img
-            src="/logos/logoNonCircle.png"
+            src="/logos/logoCircle.png"
             alt="CountyWide Pressure Washing"
             className="brand-logo"
             whileHover={{ scale: 1.05 }}
