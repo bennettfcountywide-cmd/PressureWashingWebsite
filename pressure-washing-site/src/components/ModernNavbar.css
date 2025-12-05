@@ -43,7 +43,7 @@
 }
 
 .brand-logo {
-  height: 50px;
+  height: 60px;
   width: auto;
   object-fit: contain;
   transition: transform 0.3s ease;
@@ -336,11 +336,7 @@
   }
 
   .brand-logo {
-    height: 40px;
-  }
-
-  .brand-text {
-    font-size: 0.95rem;
+    height: 45px;
   }
 
   .nav-menu {
