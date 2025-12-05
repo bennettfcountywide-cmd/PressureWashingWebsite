@@ -1,0 +1,49 @@
+.water-droplets-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.water-droplet {
+  position: absolute;
+  top: -10%;
+  background: linear-gradient(180deg,
+    rgba(124, 179, 66, 0.6) 0%,
+    rgba(85, 139, 47, 0.4) 50%,
+    rgba(124, 179, 66, 0.2) 100%
+  );
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  animation: fall linear infinite;
+  filter: blur(1px);
+  will-change: transform;
+}
+
+@keyframes fall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(0, 110vh, 0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .water-droplet {
+    animation: none;
+    opacity: 0.05;
+  }
+}

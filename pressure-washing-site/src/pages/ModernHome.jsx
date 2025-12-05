@@ -2,13 +2,19 @@ import { useState, useEffect } from 'react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useWebsiteContent } from '../context/WebsiteContentContext';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse, faBuilding, faSprayCanSparkles, faScrewdriverWrench } from '@fortawesome/free-solid-svg-icons';
 import EditableText from '../components/EditableText';
 import EditableImage from '../components/EditableImage';
 import EditableBackgroundImage from '../components/EditableBackgroundImage';
 import ModernGallery from '../components/ModernGallery';
+import WaterDroplets from '../components/WaterDroplets';
+import RippleEffect from '../components/RippleEffect';
+import FloatingButton from '../components/FloatingButton';
+import ScrollProgress from '../components/ScrollProgress';
+import WaveDivider from '../components/WaveDivider';
+import ServiceCard3D from '../components/ServiceCard3D';
 import './ModernHome.css';
 
 const ModernHome = () => {
@@ -23,6 +29,10 @@ const ModernHome = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [visibleSections, setVisibleSections] = useState({});
   const [scrollY, setScrollY] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const prefersReducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll();
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, 300]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -96,6 +106,10 @@ const ModernHome = () => {
 
   return (
     <div className="modern-home">
+      <WaterDroplets />
+      <ScrollProgress />
+      <FloatingButton />
+
       {/* Hero Section */}
       <EditableBackgroundImage
         section="hero"
@@ -105,6 +119,36 @@ const ModernHome = () => {
           transform: `translateY(${scrollY * 0.5}px)`
         }}
       >
+        {/* Floating particles */}
+        <div className="hero-particles">
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="particle"
+              initial={{
+                opacity: 0,
+                y: 100,
+                x: Math.random() * 100 - 50
+              }}
+              animate={{
+                opacity: [0, 0.6, 0],
+                y: -200,
+                x: Math.random() * 100 - 50
+              }}
+              transition={{
+                duration: 3 + Math.random() * 2,
+                delay: Math.random() * 3,
+                repeat: Infinity,
+                ease: "easeOut"
+              }}
+              style={{
+                left: `${Math.random() * 100}%`,
+                bottom: 0
+              }}
+            />
+          ))}
+        </div>
+
         <div className="hero-content" style={{ transform: `translateY(${scrollY * 0.3}px)` }}>
           <motion.div
             className="hero-text"
@@ -117,6 +161,7 @@ const ModernHome = () => {
               stiffness: 100
             }}
           >
+            {/* Typewriter effect for title */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -135,26 +180,23 @@ const ModernHome = () => {
                 {content.hero.subtitle}
               </EditableText>
             </motion.div>
-            <motion.button
+            <RippleEffect
               className="hero-cta"
               onClick={() => {
                 const contact = document.getElementById('contact');
                 contact?.scrollIntoView({ behavior: 'smooth' });
               }}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 25px 70px rgba(0, 0, 0, 0.4)"
-              }}
-              whileTap={{ scale: 0.95 }}
             >
               Get Started →
-            </motion.button>
+            </RippleEffect>
           </motion.div>
         </div>
-        <div className="hero-overlay"></div>
+        <div className="hero-overlay animated-gradient"></div>
+
+        {/* Wave divider at bottom of hero */}
+        <div className="hero-wave">
+          <WaveDivider color="gray" />
+        </div>
       </EditableBackgroundImage>
 
       {/* About Section */}
@@ -249,8 +291,9 @@ const ModernHome = () => {
         </div>
       </section>
 
-      {/* Services Section */}
+      {/* Services Section with 3D Flip Cards */}
       <section id="services" className="modern-services">
+        <WaveDivider flip color="green" />
         <div className="container">
           <motion.div
             className="services-header"
@@ -278,76 +321,21 @@ const ModernHome = () => {
 
           <div className="services-grid">
             {content.services.items.map((service, index) => {
-              // Icon mapping for each service - Residential (house), Commercial (building), Soft Washing (spray), Surface Restoration (tools)
               const serviceIcons = [faHouse, faBuilding, faSprayCanSparkles, faScrewdriverWrench];
 
               return (
-              <motion.div
-                key={service.id}
-                className="service-card"
-                initial={{ opacity: 0, y: 80, scale: 0.9 }}
-                animate={visibleSections.services ? { opacity: 1, y: 0, scale: 1 } : {}}
-                transition={{
-                  duration: 0.6,
-                  delay: 0.4 + index * 0.1,
-                  type: "spring",
-                  stiffness: 100
-                }}
-                whileHover={{
-                  y: -15,
-                  scale: 1.03,
-                  boxShadow: "0 30px 60px rgba(0, 0, 0, 0.2)",
-                  transition: { duration: 0.3 }
-                }}
-              >
-                <motion.div
-                  className="service-icon"
-                  initial={{ scale: 0, rotate: -180 }}
-                  animate={visibleSections.services ? { scale: 1, rotate: 0 } : {}}
-                  transition={{ duration: 0.6, delay: 0.5 + index * 0.1, type: "spring" }}
-                >
-                  <FontAwesomeIcon icon={serviceIcons[index]} />
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={visibleSections.services ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
-                >
-                  <EditableText
-                    section="services"
-                    field={`items.${index}.title`}
-                    as="h3"
-                    className="service-title"
-                  >
-                    {service.title}
-                  </EditableText>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={visibleSections.services ? { opacity: 1 } : {}}
-                  transition={{ duration: 0.5, delay: 0.7 + index * 0.1 }}
-                >
-                  <EditableText
-                    section="services"
-                    field={`items.${index}.description`}
-                    as="p"
-                    multiline
-                    className="service-description"
-                  >
-                    {service.description}
-                  </EditableText>
-                </motion.div>
-                <motion.div
-                  className="service-hover-effect"
-                  initial={{ scaleX: 0 }}
-                  whileHover={{ scaleX: 1 }}
-                  transition={{ duration: 0.4 }}
+                <ServiceCard3D
+                  key={service.id}
+                  service={service}
+                  index={index}
+                  icon={serviceIcons[index]}
+                  visibleSections={visibleSections.services}
                 />
-              </motion.div>
               );
             })}
           </div>
         </div>
+        <WaveDivider color="gray" />
       </section>
 
       {/* Gallery Section */}
@@ -355,6 +343,7 @@ const ModernHome = () => {
 
       {/* Contact Section */}
       <section id="contact" className="modern-contact">
+        <WaveDivider flip color="green" />
         <div className="container">
           <motion.div className="contact-grid">
             <motion.div
@@ -432,7 +421,10 @@ const ModernHome = () => {
             >
               <form onSubmit={handleSubmit} className="modern-contact-form">
                 <div className="form-row">
-                  <div className="form-group">
+                  <motion.div
+                    className="form-group"
+                    whileFocus={{ scale: 1.02 }}
+                  >
                     <input
                       type="text"
                       name="name"
@@ -440,9 +432,13 @@ const ModernHome = () => {
                       onChange={handleChange}
                       placeholder="Your Name *"
                       required
+                      className="animated-input"
                     />
-                  </div>
-                  <div className="form-group">
+                  </motion.div>
+                  <motion.div
+                    className="form-group"
+                    whileFocus={{ scale: 1.02 }}
+                  >
                     <input
                       type="email"
                       name="email"
@@ -450,21 +446,29 @@ const ModernHome = () => {
                       onChange={handleChange}
                       placeholder="Your Email *"
                       required
+                      className="animated-input"
                     />
-                  </div>
+                  </motion.div>
                 </div>
 
-                <div className="form-group">
+                <motion.div
+                  className="form-group"
+                  whileFocus={{ scale: 1.02 }}
+                >
                   <input
                     type="tel"
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="Your Phone"
+                    className="animated-input"
                   />
-                </div>
+                </motion.div>
 
-                <div className="form-group">
+                <motion.div
+                  className="form-group"
+                  whileFocus={{ scale: 1.02 }}
+                >
                   <textarea
                     name="message"
                     value={formData.message}
@@ -472,28 +476,51 @@ const ModernHome = () => {
                     placeholder="Your Message *"
                     rows="5"
                     required
+                    className="animated-input"
+                    maxLength={500}
                   ></textarea>
-                </div>
+                  <div className="character-count">
+                    {formData.message.length}/500
+                  </div>
+                </motion.div>
 
                 {submitStatus.message && (
                   <motion.div
                     className={`status-message ${submitStatus.type}`}
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, scale: 0.8, y: -20 }}
+                    animate={{
+                      opacity: 1,
+                      scale: 1,
+                      y: 0,
+                      transition: {
+                        type: "spring",
+                        stiffness: 200,
+                        damping: 15
+                      }
+                    }}
+                    exit={{ opacity: 0, scale: 0.8 }}
                   >
+                    {submitStatus.type === 'success' && (
+                      <motion.span
+                        className="success-icon"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1, rotate: 360 }}
+                        transition={{ delay: 0.2, type: "spring" }}
+                      >
+                        ✓
+                      </motion.span>
+                    )}
                     {submitStatus.message}
                   </motion.div>
                 )}
 
-                <motion.button
+                <RippleEffect
                   type="submit"
                   disabled={isSubmitting}
                   className="submit-btn"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
                 >
                   {isSubmitting ? 'Sending...' : 'Send Message →'}
-                </motion.button>
+                </RippleEffect>
               </form>
             </motion.div>
           </motion.div>
