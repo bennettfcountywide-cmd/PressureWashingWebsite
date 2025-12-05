@@ -1,0 +1,71 @@
+{
+  "hero": {
+    "title": "Professional Pressure Washing Services",
+    "subtitle": "Transform Your Property with Expert Cleaning",
+    "backgroundImage": "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1920&q=80"
+  },
+  "about": {
+    "title": "About CountyWide Pressure Washing",
+    "subtitle": "Your Trusted Cleaning Experts",
+    "text1": "CountyWide Pressure Washing provides professional cleaning services for residential and commercial properties. We use state-of-the-art equipment and eco-friendly solutions to restore your surfaces to like-new condition.",
+    "text2": "Our experienced team is committed to delivering exceptional results with every job. From driveways and sidewalks to building exteriors and decks, we have the expertise to handle all your pressure washing needs safely and effectively.",
+    "image": "https://images.unsplash.com/photo-1628744448840-55bdb2497bd4?w=800&q=80"
+  },
+  "services": {
+    "title": "Our Services",
+    "items": [
+      {
+        "id": 1,
+        "title": "Residential Cleaning",
+        "description": "House washing, driveway cleaning, and deck restoration\n\nRoof cleaning and gutter brightening\n\nFence and patio pressure washing for a fresh look"
+      },
+      {
+        "id": 2,
+        "title": "Commercial Cleaning",
+        "description": "Building exterior washing and storefront cleaning\n\nParking lot and sidewalk maintenance\n\nGraffiti removal and property management services"
+      },
+      {
+        "id": 3,
+        "title": "Soft Washing",
+        "description": "Gentle cleaning for delicate surfaces like siding and roofs\n\nEco-friendly solutions that kill mold, mildew, and algae\n\nLong-lasting results without high pressure damage"
+      },
+      {
+        "id": 4,
+        "title": "Surface Restoration",
+        "description": "Concrete cleaning and sealing for lasting protection\n\nWood deck cleaning, staining, and sealing\n\nPaver restoration and joint sand replacement"
+      }
+    ]
+  },
+  "gallery": {
+    "title": "Our Work",
+    "subtitle": "See the difference professional pressure washing makes",
+    "images": [
+      {
+        "id": 1,
+        "url": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=600&q=80",
+        "caption": "Beautiful Home Exterior Washing"
+      },
+      {
+        "id": 2,
+        "url": "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&q=80",
+        "caption": "Professional Driveway Cleaning"
+      },
+      {
+        "id": 3,
+        "url": "https://images.unsplash.com/photo-1628744448840-55bdb2497bd4?w=600&q=80",
+        "caption": "Deck Restoration Project"
+      }
+    ]
+  },
+  "contact": {
+    "title": "Get A Free Quote",
+    "subtitle": "Contact us today for a free estimate",
+    "address": "Serving Johnston County, NC\nand surrounding areas",
+    "phone": "(919) 555-WASH",
+    "hours": "Monday - Saturday: 8:00 AM - 6:00 PM"
+  },
+  "navbar": {
+    "companyName": "CountyWide Pressure Washing",
+    "phone": "(919) 555-WASH"
+  }
+}
