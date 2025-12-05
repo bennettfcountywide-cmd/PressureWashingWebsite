@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useWebsiteContent } from '../context/WebsiteContentContext';
 import { motion } from 'framer-motion';
+import EditableText from './EditableText';
 import './ModernNavbar.css';
 
 const ModernNavbar = () => {
@@ -154,7 +155,7 @@ const ModernNavbar = () => {
           )}
 
           <a href={`tel:${content.navbar.phone.replace(/\D/g, '')}`} className="phone-btn">
-            📞 {content.navbar.phone}
+            📞 <EditableText section="navbar" field="phone" as="span">{content.navbar.phone}</EditableText>
           </a>
         </div>
       </div>
