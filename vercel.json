@@ -1,0 +1,6 @@
+{
+  "buildCommand": "cd pressure-washing-site && npm run build",
+  "outputDirectory": "pressure-washing-site/dist",
+  "installCommand": "cd pressure-washing-site && npm install",
+  "framework": "vite"
+}
