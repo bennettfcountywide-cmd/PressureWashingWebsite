@@ -42,11 +42,23 @@
   transform: scale(1.05);
 }
 
+.brand-logo {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.admin-navbar .brand-logo {
+  filter: brightness(0) invert(1);
+}
+
 .brand-text {
   background: linear-gradient(135deg, #7CB342 0%, #558B2F 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  font-size: 1.125rem;
 }
 
 .admin-navbar .brand-text {
@@ -321,6 +333,14 @@
 
   .navbar-brand {
     font-size: 1.125rem;
+  }
+
+  .brand-logo {
+    height: 40px;
+  }
+
+  .brand-text {
+    font-size: 0.95rem;
   }
 
   .nav-menu {
