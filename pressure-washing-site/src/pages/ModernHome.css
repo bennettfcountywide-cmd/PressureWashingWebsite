@@ -422,11 +422,11 @@
 /* Overlay Settings Styles */
 .overlay-settings-btn {
   position: absolute;
-  top: 20px;
+  top: 70px;
   right: 20px;
-  z-index: 3;
+  z-index: 10;
   padding: 0.75rem 1.5rem;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   color: #7CB342;
   border: 2px solid #7CB342;
   border-radius: 50px;
@@ -435,14 +435,14 @@
   cursor: pointer;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .overlay-settings-btn:hover {
-  background: rgba(124, 179, 66, 0.9);
+  background: rgba(124, 179, 66, 1);
   color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(124, 179, 66, 0.4);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(124, 179, 66, 0.5);
 }
 
 .overlay-settings-modal {
@@ -739,7 +739,14 @@
 
 /* Better styling for editing controls on flipped cards */
 .card-back .rich-text-editor {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   border: 3px solid white;
 }
 
@@ -750,6 +757,46 @@
 .card-back .rte-content {
   background: white;
   color: #1a202c;
+  min-height: 200px;
+  max-height: 400px;
+}
+
+/* Add overlay backdrop when editing card text */
+.card-back .rich-text-editor::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: -1;
+}
+
+/* Also apply to front card editing */
+.card-front .editable-text-editor {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  max-width: 500px;
+  width: 90%;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.card-front .editable-text-editor::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: -1;
 }
 
 .service-icon-large {
