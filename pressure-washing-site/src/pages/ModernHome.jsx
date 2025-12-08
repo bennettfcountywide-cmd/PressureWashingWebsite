@@ -7,13 +7,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faHouse, faBuilding, faSprayCanSparkles, faScrewdriverWrench, faPlus,
   faCar, faTruck, faBroom, faWater, faTree, faIndustry, faDroplet,
-  faShower, faBucket, faHandSparkles, faPaintRoller, faHammer, faWrench,
-  faBrush, faRoad, faBuildingUser, faStore, faWarehouse, faShop,
-  faHouseChimney, faHouseFlag, faHouseLaptop, faDoorOpen, faGarage,
-  faDumpster, faToilet, faFaucet, faSink, faBath, faSprayCan,
+  faShower, faHandSparkles, faPaintRoller, faHammer, faWrench,
+  faBrush, faRoad, faStore, faWarehouse, faShop,
+  faHouseChimney, faHouseFlag, faDoorOpen,
+  faToilet, faFaucet, faBath, faSprayCan,
   faMountain, faCampground, faUmbrella, faChair, faPalette, faRecycle,
-  faScrewdriver, faToolbox, faGears, faCog, faWheelchair, faPersonCane,
-  faHospital, faSchool, faChurch, faLandmark, faMonument, faPeopleRoof
+  faScrewdriver, faToolbox, faGears, faCog, faWheelchair,
+  faHospital, faSchool, faChurch, faLandmark, faMonument, faPeopleRoof,
+  faLeaf, faSeedling, faSun, faCloudRain, faWind, faSnowflake,
+  faBolt, faFire, faHeart, faStar, faCheck, faTimes
 } from '@fortawesome/free-solid-svg-icons';
 import EditableText from '../components/EditableText';
 import EditableImage from '../components/EditableImage';
@@ -59,11 +61,9 @@ const ModernHome = () => {
 
   const availableIcons = [
     { icon: faHouse, name: 'House' },
-    { icon: faHouseChimney, name: 'House 2' },
-    { icon: faHouseFlag, name: 'House 3' },
-    { icon: faHouseLaptop, name: 'Home Office' },
+    { icon: faHouseChimney, name: 'House Alt' },
+    { icon: faHouseFlag, name: 'House Flag' },
     { icon: faBuilding, name: 'Building' },
-    { icon: faBuildingUser, name: 'Office' },
     { icon: faStore, name: 'Store' },
     { icon: faWarehouse, name: 'Warehouse' },
     { icon: faShop, name: 'Shop' },
@@ -73,7 +73,6 @@ const ModernHome = () => {
     { icon: faWater, name: 'Water' },
     { icon: faDroplet, name: 'Droplet' },
     { icon: faShower, name: 'Shower' },
-    { icon: faBucket, name: 'Bucket' },
     { icon: faBroom, name: 'Broom' },
     { icon: faBrush, name: 'Brush' },
     { icon: faPaintRoller, name: 'Paint Roller' },
@@ -88,13 +87,12 @@ const ModernHome = () => {
     { icon: faTruck, name: 'Truck' },
     { icon: faRoad, name: 'Road' },
     { icon: faDoorOpen, name: 'Door' },
-    { icon: faGarage, name: 'Garage' },
-    { icon: faDumpster, name: 'Dumpster' },
     { icon: faToilet, name: 'Toilet' },
     { icon: faFaucet, name: 'Faucet' },
-    { icon: faSink, name: 'Sink' },
     { icon: faBath, name: 'Bath' },
     { icon: faTree, name: 'Tree' },
+    { icon: faLeaf, name: 'Leaf' },
+    { icon: faSeedling, name: 'Seedling' },
     { icon: faMountain, name: 'Mountain' },
     { icon: faCampground, name: 'Campground' },
     { icon: faUmbrella, name: 'Umbrella' },
@@ -103,13 +101,22 @@ const ModernHome = () => {
     { icon: faRecycle, name: 'Recycle' },
     { icon: faIndustry, name: 'Industry' },
     { icon: faWheelchair, name: 'Wheelchair' },
-    { icon: faPersonCane, name: 'Accessible' },
     { icon: faHospital, name: 'Hospital' },
     { icon: faSchool, name: 'School' },
     { icon: faChurch, name: 'Church' },
     { icon: faLandmark, name: 'Landmark' },
     { icon: faMonument, name: 'Monument' },
-    { icon: faPeopleRoof, name: 'Community' }
+    { icon: faPeopleRoof, name: 'Community' },
+    { icon: faSun, name: 'Sun' },
+    { icon: faCloudRain, name: 'Rain' },
+    { icon: faWind, name: 'Wind' },
+    { icon: faSnowflake, name: 'Snowflake' },
+    { icon: faBolt, name: 'Bolt' },
+    { icon: faFire, name: 'Fire' },
+    { icon: faHeart, name: 'Heart' },
+    { icon: faStar, name: 'Star' },
+    { icon: faCheck, name: 'Check' },
+    { icon: faTimes, name: 'X' }
   ];
 
   useEffect(() => {
