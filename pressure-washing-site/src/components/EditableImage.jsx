@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useWebsiteContent } from '../context/WebsiteContentContext';
 import './EditableImage.css';
 
-const EditableImage = ({ section, field, alt, className = '' }) => {
+const EditableImage = ({ section, field, alt, className = '', style = {} }) => {
   const { content, editMode, updateContent } = useWebsiteContent();
   const [isEditing, setIsEditing] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
@@ -191,6 +191,7 @@ const EditableImage = ({ section, field, alt, className = '' }) => {
         src={currentImageUrl}
         alt={alt}
         className={className}
+        style={style}
         onClick={handleClick}
         title={editMode ? 'Click to change image' : ''}
       />

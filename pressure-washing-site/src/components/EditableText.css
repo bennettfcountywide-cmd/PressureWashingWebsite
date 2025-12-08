@@ -16,16 +16,26 @@
 .editable-text:hover::after {
   content: '✏️ Click to edit';
   position: absolute;
-  top: -25px;
-  left: 0;
-  background-color: #7CB342;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(124, 179, 66, 0.95);
   color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
   white-space: nowrap;
   z-index: 1000;
   pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Hide tooltip on very large text elements */
+.hero-subtitle.editable-text:hover::after,
+.hero-title.editable-text:hover::after,
+.section-title.editable-text:hover::after {
+  display: none;
 }
 
 .editable-text-editor {

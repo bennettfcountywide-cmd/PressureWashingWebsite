@@ -4,7 +4,17 @@ import { db } from '../firebase/config';
 import { useWebsiteContent } from '../context/WebsiteContentContext';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faBuilding, faSprayCanSparkles, faScrewdriverWrench, faPlus, faCar, faTruck, faBroom, faWater, faTree, faIndustry } from '@fortawesome/free-solid-svg-icons';
+import {
+  faHouse, faBuilding, faSprayCanSparkles, faScrewdriverWrench, faPlus,
+  faCar, faTruck, faBroom, faWater, faTree, faIndustry, faDroplet,
+  faShower, faBucket, faHandSparkles, faPaintRoller, faHammer, faWrench,
+  faBrush, faRoad, faBuildingUser, faStore, faWarehouse, faShop,
+  faHouseChimney, faHouseFlag, faHouseLaptop, faDoorOpen, faGarage,
+  faDumpster, faToilet, faFaucet, faSink, faBath, faSprayCan,
+  faMountain, faCampground, faUmbrella, faChair, faPalette, faRecycle,
+  faScrewdriver, faToolbox, faGears, faCog, faWheelchair, faPersonCane,
+  faHospital, faSchool, faChurch, faLandmark, faMonument, faPeopleRoof
+} from '@fortawesome/free-solid-svg-icons';
 import EditableText from '../components/EditableText';
 import EditableImage from '../components/EditableImage';
 import EditableBackgroundImage from '../components/EditableBackgroundImage';
@@ -41,21 +51,65 @@ const ModernHome = () => {
     color3: '#558B2F',
     opacity: 0.35
   });
+  const [logoOpacity, setLogoOpacity] = useState(1);
+  const [showLogoSettings, setShowLogoSettings] = useState(false);
   const prefersReducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll();
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 300]);
 
   const availableIcons = [
     { icon: faHouse, name: 'House' },
+    { icon: faHouseChimney, name: 'House 2' },
+    { icon: faHouseFlag, name: 'House 3' },
+    { icon: faHouseLaptop, name: 'Home Office' },
     { icon: faBuilding, name: 'Building' },
-    { icon: faSprayCanSparkles, name: 'Spray' },
+    { icon: faBuildingUser, name: 'Office' },
+    { icon: faStore, name: 'Store' },
+    { icon: faWarehouse, name: 'Warehouse' },
+    { icon: faShop, name: 'Shop' },
+    { icon: faSprayCanSparkles, name: 'Spray Sparkle' },
+    { icon: faSprayCan, name: 'Spray Can' },
+    { icon: faHandSparkles, name: 'Clean Hands' },
+    { icon: faWater, name: 'Water' },
+    { icon: faDroplet, name: 'Droplet' },
+    { icon: faShower, name: 'Shower' },
+    { icon: faBucket, name: 'Bucket' },
+    { icon: faBroom, name: 'Broom' },
+    { icon: faBrush, name: 'Brush' },
+    { icon: faPaintRoller, name: 'Paint Roller' },
     { icon: faScrewdriverWrench, name: 'Tools' },
+    { icon: faScrewdriver, name: 'Screwdriver' },
+    { icon: faWrench, name: 'Wrench' },
+    { icon: faHammer, name: 'Hammer' },
+    { icon: faToolbox, name: 'Toolbox' },
+    { icon: faGears, name: 'Gears' },
+    { icon: faCog, name: 'Settings' },
     { icon: faCar, name: 'Car' },
     { icon: faTruck, name: 'Truck' },
-    { icon: faBroom, name: 'Broom' },
-    { icon: faWater, name: 'Water' },
+    { icon: faRoad, name: 'Road' },
+    { icon: faDoorOpen, name: 'Door' },
+    { icon: faGarage, name: 'Garage' },
+    { icon: faDumpster, name: 'Dumpster' },
+    { icon: faToilet, name: 'Toilet' },
+    { icon: faFaucet, name: 'Faucet' },
+    { icon: faSink, name: 'Sink' },
+    { icon: faBath, name: 'Bath' },
     { icon: faTree, name: 'Tree' },
-    { icon: faIndustry, name: 'Industry' }
+    { icon: faMountain, name: 'Mountain' },
+    { icon: faCampground, name: 'Campground' },
+    { icon: faUmbrella, name: 'Umbrella' },
+    { icon: faChair, name: 'Chair' },
+    { icon: faPalette, name: 'Palette' },
+    { icon: faRecycle, name: 'Recycle' },
+    { icon: faIndustry, name: 'Industry' },
+    { icon: faWheelchair, name: 'Wheelchair' },
+    { icon: faPersonCane, name: 'Accessible' },
+    { icon: faHospital, name: 'Hospital' },
+    { icon: faSchool, name: 'School' },
+    { icon: faChurch, name: 'Church' },
+    { icon: faLandmark, name: 'Landmark' },
+    { icon: faMonument, name: 'Monument' },
+    { icon: faPeopleRoof, name: 'Community' }
   ];
 
   useEffect(() => {
@@ -360,8 +414,18 @@ const ModernHome = () => {
                   field="image"
                   alt="About Us"
                   className="about-image"
+                  style={{ opacity: logoOpacity }}
                 />
               </motion.div>
+              {editMode && (
+                <button
+                  className="logo-settings-btn"
+                  onClick={() => setShowLogoSettings(true)}
+                  title="Adjust logo transparency"
+                >
+                  🎨
+                </button>
+              )}
             </motion.div>
           </motion.div>
         </div>
@@ -695,6 +759,39 @@ const ModernHome = () => {
               </div>
             </div>
             <button className="close-modal-btn" onClick={() => setShowOverlaySettings(false)}>
+              Done
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Logo Opacity Settings Modal */}
+      {showLogoSettings && (
+        <div className="modal-overlay" onClick={() => setShowLogoSettings(false)}>
+          <div className="modal-content overlay-settings-modal" onClick={(e) => e.stopPropagation()}>
+            <h3>Logo Transparency</h3>
+            <div className="overlay-controls">
+              <div className="control-group">
+                <label>Opacity: {Math.round(logoOpacity * 100)}%</label>
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.05"
+                  value={logoOpacity}
+                  onChange={(e) => setLogoOpacity(parseFloat(e.target.value))}
+                  className="opacity-slider"
+                />
+              </div>
+              <div className="logo-opacity-preview" style={{ opacity: logoOpacity }}>
+                <img
+                  src={content.about.image}
+                  alt="Logo preview"
+                  style={{ maxWidth: '100%', maxHeight: '200px', objectFit: 'contain' }}
+                />
+              </div>
+            </div>
+            <button className="close-modal-btn" onClick={() => setShowLogoSettings(false)}>
               Done
             </button>
           </div>
