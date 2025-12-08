@@ -4,7 +4,7 @@ import { db } from '../firebase/config';
 import { useWebsiteContent } from '../context/WebsiteContentContext';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faBuilding, faSprayCanSparkles, faScrewdriverWrench } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faBuilding, faSprayCanSparkles, faScrewdriverWrench, faPlus, faCar, faTruck, faBroom, faWater, faTree, faIndustry } from '@fortawesome/free-solid-svg-icons';
 import EditableText from '../components/EditableText';
 import EditableImage from '../components/EditableImage';
 import EditableBackgroundImage from '../components/EditableBackgroundImage';
@@ -18,7 +18,7 @@ import ServiceCard3D from '../components/ServiceCard3D';
 import './ModernHome.css';
 
 const ModernHome = () => {
-  const { content } = useWebsiteContent();
+  const { content, editMode, addServiceItem } = useWebsiteContent();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -30,9 +30,33 @@ const ModernHome = () => {
   const [visibleSections, setVisibleSections] = useState({});
   const [scrollY, setScrollY] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [showIconSelector, setShowIconSelector] = useState(false);
+  const [selectedServiceIndex, setSelectedServiceIndex] = useState(null);
+  const [serviceIcons, setServiceIcons] = useState([faHouse, faBuilding, faSprayCanSparkles, faScrewdriverWrench]);
+  const [showAddService, setShowAddService] = useState(false);
+  const [showOverlaySettings, setShowOverlaySettings] = useState(false);
+  const [overlaySettings, setOverlaySettings] = useState({
+    color1: '#7CB342',
+    color2: '#00D9FF',
+    color3: '#558B2F',
+    opacity: 0.35
+  });
   const prefersReducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll();
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 300]);
+
+  const availableIcons = [
+    { icon: faHouse, name: 'House' },
+    { icon: faBuilding, name: 'Building' },
+    { icon: faSprayCanSparkles, name: 'Spray' },
+    { icon: faScrewdriverWrench, name: 'Tools' },
+    { icon: faCar, name: 'Car' },
+    { icon: faTruck, name: 'Truck' },
+    { icon: faBroom, name: 'Broom' },
+    { icon: faWater, name: 'Water' },
+    { icon: faTree, name: 'Tree' },
+    { icon: faIndustry, name: 'Industry' }
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -102,6 +126,47 @@ const ModernHome = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleIconChange = (index) => {
+    setSelectedServiceIndex(index);
+    setShowIconSelector(true);
+  };
+
+  const handleIconSelect = (icon) => {
+    const newIcons = [...serviceIcons];
+    newIcons[selectedServiceIndex] = icon;
+    setServiceIcons(newIcons);
+    setShowIconSelector(false);
+  };
+
+  const handleAddService = async () => {
+    await addServiceItem({
+      title: 'New Service',
+      description: 'Click to edit this service description'
+    });
+    // Add a default icon for the new service
+    setServiceIcons([...serviceIcons, faSprayCanSparkles]);
+    setShowAddService(false);
+  };
+
+  const hexToRgba = (hex, alpha) => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  };
+
+  const getOverlayStyle = () => {
+    return {
+      background: `linear-gradient(135deg,
+        ${hexToRgba(overlaySettings.color1, overlaySettings.opacity)} 0%,
+        ${hexToRgba(overlaySettings.color2, overlaySettings.opacity * 0.85)} 50%,
+        ${hexToRgba(overlaySettings.color3, overlaySettings.opacity)} 100%
+      )`,
+      backgroundSize: '200% 200%',
+      animation: 'gradientShift 15s ease infinite'
+    };
   };
 
   return (
@@ -191,7 +256,18 @@ const ModernHome = () => {
             </RippleEffect>
           </motion.div>
         </div>
-        <div className="hero-overlay animated-gradient"></div>
+        <div className="hero-overlay animated-gradient" style={getOverlayStyle()}></div>
+
+        {/* Overlay Settings Button (only visible in edit mode) */}
+        {editMode && (
+          <button
+            className="overlay-settings-btn"
+            onClick={() => setShowOverlaySettings(true)}
+            title="Edit overlay settings"
+          >
+            🎨 Edit Overlay
+          </button>
+        )}
 
         {/* Wave divider at bottom of hero */}
         <div className="hero-wave">
@@ -320,20 +396,31 @@ const ModernHome = () => {
           </motion.div>
 
           <div className="services-grid">
-            {content.services.items.map((service, index) => {
-              const serviceIcons = [faHouse, faBuilding, faSprayCanSparkles, faScrewdriverWrench];
-
-              return (
-                <ServiceCard3D
-                  key={service.id}
-                  service={service}
-                  index={index}
-                  icon={serviceIcons[index]}
-                  visibleSections={visibleSections.services}
-                />
-              );
-            })}
+            {content.services.items.map((service, index) => (
+              <ServiceCard3D
+                key={service.id}
+                service={service}
+                index={index}
+                icon={serviceIcons[index] || faSprayCanSparkles}
+                visibleSections={visibleSections.services}
+                onIconChange={handleIconChange}
+              />
+            ))}
           </div>
+
+          {/* Add Service Button (only visible in edit mode) */}
+          {editMode && (
+            <motion.button
+              className="add-service-btn"
+              onClick={handleAddService}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FontAwesomeIcon icon={faPlus} /> Add Service
+            </motion.button>
+          )}
         </div>
         <WaveDivider color="gray" />
       </section>
@@ -526,6 +613,93 @@ const ModernHome = () => {
           </motion.div>
         </div>
       </section>
+
+      {/* Icon Selector Modal */}
+      {showIconSelector && (
+        <div className="modal-overlay" onClick={() => setShowIconSelector(false)}>
+          <div className="modal-content icon-selector-modal" onClick={(e) => e.stopPropagation()}>
+            <h3>Select an Icon</h3>
+            <div className="icon-grid">
+              {availableIcons.map((item, idx) => (
+                <button
+                  key={idx}
+                  className="icon-option"
+                  onClick={() => handleIconSelect(item.icon)}
+                  title={item.name}
+                >
+                  <FontAwesomeIcon icon={item.icon} />
+                  <span>{item.name}</span>
+                </button>
+              ))}
+            </div>
+            <button className="close-modal-btn" onClick={() => setShowIconSelector(false)}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Overlay Settings Modal */}
+      {showOverlaySettings && (
+        <div className="modal-overlay" onClick={() => setShowOverlaySettings(false)}>
+          <div className="modal-content overlay-settings-modal" onClick={(e) => e.stopPropagation()}>
+            <h3>Hero Overlay Settings</h3>
+            <div className="overlay-controls">
+              <div className="control-group">
+                <label>Color 1 (Left)</label>
+                <div className="color-input-wrapper">
+                  <input
+                    type="color"
+                    value={overlaySettings.color1}
+                    onChange={(e) => setOverlaySettings({ ...overlaySettings, color1: e.target.value })}
+                  />
+                  <span>{overlaySettings.color1}</span>
+                </div>
+              </div>
+              <div className="control-group">
+                <label>Color 2 (Center)</label>
+                <div className="color-input-wrapper">
+                  <input
+                    type="color"
+                    value={overlaySettings.color2}
+                    onChange={(e) => setOverlaySettings({ ...overlaySettings, color2: e.target.value })}
+                  />
+                  <span>{overlaySettings.color2}</span>
+                </div>
+              </div>
+              <div className="control-group">
+                <label>Color 3 (Right)</label>
+                <div className="color-input-wrapper">
+                  <input
+                    type="color"
+                    value={overlaySettings.color3}
+                    onChange={(e) => setOverlaySettings({ ...overlaySettings, color3: e.target.value })}
+                  />
+                  <span>{overlaySettings.color3}</span>
+                </div>
+              </div>
+              <div className="control-group">
+                <label>Opacity: {Math.round(overlaySettings.opacity * 100)}%</label>
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.05"
+                  value={overlaySettings.opacity}
+                  onChange={(e) => setOverlaySettings({ ...overlaySettings, opacity: parseFloat(e.target.value) })}
+                  className="opacity-slider"
+                />
+              </div>
+              <div className="overlay-preview" style={getOverlayStyle()}>
+                <p>Preview</p>
+              </div>
+            </div>
+            <button className="close-modal-btn" onClick={() => setShowOverlaySettings(false)}>
+              Done
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

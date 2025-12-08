@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import EditableText from './EditableText';
+import { useWebsiteContent } from '../context/WebsiteContentContext';
 
-const ServiceCard3D = ({ service, index, icon, visibleSections }) => {
+const ServiceCard3D = ({ service, index, icon, visibleSections, onIconChange }) => {
+  const { editMode, deleteServiceItem } = useWebsiteContent();
   const [isFlipped, setIsFlipped] = useState(false);
   const [cardRotate, setCardRotate] = useState({ x: 0, y: 0 });
   const prefersReducedMotion = useReducedMotion();
@@ -25,6 +28,24 @@ const ServiceCard3D = ({ service, index, icon, visibleSections }) => {
     setCardRotate({ x: 0, y: 0 });
   };
 
+  const handleCardClick = (e) => {
+    // Don't flip if clicking on editable content, buttons, or inputs
+    if (e.target.closest('[contenteditable="true"]') ||
+        e.target.closest('button') ||
+        e.target.closest('input') ||
+        e.target.closest('textarea') ||
+        e.target.closest('.edit-controls')) {
+      return;
+    }
+    setIsFlipped(!isFlipped);
+  };
+
+  const handleDelete = () => {
+    if (window.confirm('Are you sure you want to delete this service?')) {
+      deleteServiceItem(service.id);
+    }
+  };
+
   return (
     <motion.div
       className={`service-card-3d ${isFlipped ? 'flipped' : ''}`}
@@ -36,7 +57,7 @@ const ServiceCard3D = ({ service, index, icon, visibleSections }) => {
         type: "spring",
         stiffness: 100
       }}
-      onClick={() => setIsFlipped(!isFlipped)}
+      onClick={handleCardClick}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{
@@ -46,6 +67,17 @@ const ServiceCard3D = ({ service, index, icon, visibleSections }) => {
       }}
     >
       <div className="card-inner">
+        {/* Delete button (only visible in edit mode) */}
+        {editMode && (
+          <button
+            className="delete-service-btn"
+            onClick={handleDelete}
+            title="Delete service"
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
+        )}
+
         {/* Front of card */}
         <div className="card-front">
           <motion.div
@@ -53,9 +85,12 @@ const ServiceCard3D = ({ service, index, icon, visibleSections }) => {
             initial={{ scale: 0, rotate: -180 }}
             animate={visibleSections ? { scale: 1, rotate: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.5 + index * 0.1, type: "spring" }}
+            onClick={editMode ? (e) => { e.stopPropagation(); onIconChange && onIconChange(index); } : undefined}
+            style={{ cursor: editMode ? 'pointer' : 'default' }}
           >
             <FontAwesomeIcon icon={icon} />
           </motion.div>
+          {editMode && <p className="edit-icon-hint">Click icon to change</p>}
           <h3 className="service-title-front">
             <EditableText
               section="services"
