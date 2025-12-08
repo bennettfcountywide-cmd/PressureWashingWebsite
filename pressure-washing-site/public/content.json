@@ -2,14 +2,14 @@
   "hero": {
     "title": "Professional Pressure Washing Services",
     "subtitle": "Transform Your Property with Expert Cleaning",
-    "backgroundImage": "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1920&q=80"
+    "backgroundImage": "https://i.ibb.co/V0ZzGRBV/d7ee3025899d.webp"
   },
   "about": {
     "title": "About CountyWide Pressure Washing",
     "subtitle": "Your Trusted Cleaning Experts",
     "text1": "CountyWide Pressure Washing provides professional cleaning services for residential and commercial properties. We use state-of-the-art equipment and eco-friendly solutions to restore your surfaces to like-new condition.",
     "text2": "Our experienced team is committed to delivering exceptional results with every job. From driveways and sidewalks to building exteriors and decks, we have the expertise to handle all your pressure washing needs safely and effectively.",
-    "image": "https://images.unsplash.com/photo-1628744448840-55bdb2497bd4?w=800&q=80"
+    "image": "https://i.ibb.co/s9CRPcpC/f1c05a0f9e19.png"
   },
   "services": {
     "title": "Our Services",
@@ -26,7 +26,7 @@
       },
       {
         "id": 3,
-        "title": "Soft Washing",
+        "title": "Soft Washing!",
         "description": "Gentle cleaning for delicate surfaces like siding and roofs\n\nEco-friendly solutions that kill mold, mildew, and algae\n\nLong-lasting results without high pressure damage"
       },
       {
@@ -66,6 +66,6 @@
   },
   "navbar": {
     "companyName": "CountyWide Pressure Washing",
-    "phone": "(919) 555-WASH"
+    "phone": "(336) 972 7671"
   }
 }
