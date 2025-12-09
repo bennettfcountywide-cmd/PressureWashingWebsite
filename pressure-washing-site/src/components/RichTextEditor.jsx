@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import './RichTextEditor.css';
 
-const RichTextEditor = ({ value, onChange, onSave, onCancel, saving }) => {
+const RichTextEditor = ({ value, onChange, onSave, onCancel, saving, maxCharacters = 300 }) => {
   const editorRef = useRef(null);
   const [isPreview, setIsPreview] = useState(false);
+  const [charCount, setCharCount] = useState(0);
   const isInitialized = useRef(false);
 
   // Set initial content only once
@@ -12,6 +13,7 @@ const RichTextEditor = ({ value, onChange, onSave, onCancel, saving }) => {
       const convertedHtml = convertTextToHtml(value);
       editorRef.current.innerHTML = convertedHtml;
       isInitialized.current = true;
+      updateCharCount();
     }
   }, []);
 
@@ -20,9 +22,42 @@ const RichTextEditor = ({ value, onChange, onSave, onCancel, saving }) => {
     editorRef.current?.focus();
   };
 
+  const applyFontSize = (size) => {
+    document.execCommand('fontSize', false, '7');
+    const fontElements = editorRef.current?.querySelectorAll('font[size="7"]');
+    fontElements?.forEach(element => {
+      element.removeAttribute('size');
+      element.style.fontSize = size;
+    });
+    editorRef.current?.focus();
+  };
+
+  const updateCharCount = () => {
+    const text = getPlainText(editorRef.current?.innerHTML || '');
+    setCharCount(text.length);
+  };
+
   const handleInput = () => {
     const html = editorRef.current?.innerHTML || '';
-    onChange(html);
+    const text = getPlainText(html);
+
+    if (text.length > maxCharacters) {
+      // Truncate to max characters
+      const truncated = text.substring(0, maxCharacters);
+      editorRef.current.textContent = truncated;
+      // Move cursor to end
+      const range = document.createRange();
+      const sel = window.getSelection();
+      range.selectNodeContents(editorRef.current);
+      range.collapse(false);
+      sel.removeAllRanges();
+      sel.addRange(range);
+      setCharCount(maxCharacters);
+      onChange(editorRef.current.innerHTML);
+    } else {
+      setCharCount(text.length);
+      onChange(html);
+    }
   };
 
   const convertTextToHtml = (text) => {
@@ -67,13 +102,51 @@ const RichTextEditor = ({ value, onChange, onSave, onCancel, saving }) => {
           <u>U</u>
         </button>
         <div className="rte-separator"></div>
+        <select
+          onChange={(e) => applyFontSize(e.target.value)}
+          className="rte-select"
+          title="Font Size"
+          defaultValue=""
+        >
+          <option value="" disabled>Size</option>
+          <option value="0.75rem">Small</option>
+          <option value="1rem">Normal</option>
+          <option value="1.25rem">Large</option>
+          <option value="1.5rem">X-Large</option>
+        </select>
+        <div className="rte-separator"></div>
+        <button
+          type="button"
+          onClick={() => applyFormat('justifyLeft')}
+          className="rte-btn"
+          title="Align Left"
+        >
+          ☰
+        </button>
+        <button
+          type="button"
+          onClick={() => applyFormat('justifyCenter')}
+          className="rte-btn"
+          title="Align Center"
+        >
+          ☰
+        </button>
+        <button
+          type="button"
+          onClick={() => applyFormat('justifyRight')}
+          className="rte-btn"
+          title="Align Right"
+        >
+          ☰
+        </button>
+        <div className="rte-separator"></div>
         <button
           type="button"
           onClick={() => applyFormat('insertUnorderedList')}
           className="rte-btn"
           title="Bullet List"
         >
-          ⦿
+          •
         </button>
         <button
           type="button"
@@ -81,40 +154,7 @@ const RichTextEditor = ({ value, onChange, onSave, onCancel, saving }) => {
           className="rte-btn"
           title="Numbered List"
         >
-          ≡
-        </button>
-        <div className="rte-separator"></div>
-        <button
-          type="button"
-          onClick={() => applyFormat('formatBlock', 'h1')}
-          className="rte-btn"
-          title="Heading 1"
-        >
-          H1
-        </button>
-        <button
-          type="button"
-          onClick={() => applyFormat('formatBlock', 'h2')}
-          className="rte-btn"
-          title="Heading 2"
-        >
-          H2
-        </button>
-        <button
-          type="button"
-          onClick={() => applyFormat('formatBlock', 'h3')}
-          className="rte-btn"
-          title="Heading 3"
-        >
-          H3
-        </button>
-        <button
-          type="button"
-          onClick={() => applyFormat('formatBlock', 'p')}
-          className="rte-btn"
-          title="Paragraph"
-        >
-          P
+          1.
         </button>
         <div className="rte-separator"></div>
         <button
@@ -133,6 +173,13 @@ const RichTextEditor = ({ value, onChange, onSave, onCancel, saving }) => {
         >
           👁
         </button>
+      </div>
+
+      {/* Character counter */}
+      <div className="rte-char-counter">
+        <span className={charCount > maxCharacters * 0.9 ? 'warning' : ''}>
+          {charCount} / {maxCharacters} characters
+        </span>
       </div>
 
       {isPreview ? (

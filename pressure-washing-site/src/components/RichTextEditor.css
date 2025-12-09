@@ -54,10 +54,47 @@
   font-size: 1rem;
 }
 
+.rte-select {
+  padding: 0.5rem;
+  background: white;
+  border: 1px solid #cbd5e0;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  min-width: 80px;
+}
+
+.rte-select:hover {
+  background: #edf2f7;
+  border-color: #7CB342;
+}
+
+.rte-select:focus {
+  outline: none;
+  border-color: #7CB342;
+  box-shadow: 0 0 0 3px rgba(124, 179, 66, 0.1);
+}
+
 .rte-separator {
   width: 1px;
   background: #cbd5e0;
   margin: 0 0.25rem;
+}
+
+.rte-char-counter {
+  padding: 0.5rem 1rem;
+  background: #f7fafc;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.875rem;
+  color: #4a5568;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.rte-char-counter .warning {
+  color: #d97706;
+  font-weight: 600;
 }
 
 .rte-content,
