@@ -49,16 +49,20 @@ const ModernHome = () => {
   const [showOverlaySettings, setShowOverlaySettings] = useState(false);
   const [showLogoSettings, setShowLogoSettings] = useState(false);
 
-  // Get overlay settings from content
-  const overlaySettings = {
+  // Temporary state for editing (to avoid glitchy updates)
+  const [tempOverlaySettings, setTempOverlaySettings] = useState(null);
+  const [tempLogoOpacity, setTempLogoOpacity] = useState(null);
+
+  // Get overlay settings from content or temp state
+  const overlaySettings = tempOverlaySettings || {
     color1: content.hero.overlayColor1 || '#7CB342',
     color2: content.hero.overlayColor2 || '#00D9FF',
     color3: content.hero.overlayColor3 || '#558B2F',
     opacity: content.hero.overlayOpacity || 0.35
   };
 
-  // Get logo opacity from content
-  const logoOpacity = content.about.logoOpacity || 1;
+  // Get logo opacity from content or temp state
+  const logoOpacity = tempLogoOpacity !== null ? tempLogoOpacity : (content.about.logoOpacity || 1);
   const prefersReducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll();
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 300]);
@@ -336,6 +340,13 @@ const ModernHome = () => {
             className="overlay-settings-btn"
             onClick={(e) => {
               e.stopPropagation();
+              // Initialize temp state with current values
+              setTempOverlaySettings({
+                color1: content.hero.overlayColor1 || '#7CB342',
+                color2: content.hero.overlayColor2 || '#00D9FF',
+                color3: content.hero.overlayColor3 || '#558B2F',
+                opacity: content.hero.overlayOpacity || 0.35
+              });
               setShowOverlaySettings(true);
             }}
             title="Edit overlay settings"
@@ -436,7 +447,11 @@ const ModernHome = () => {
               {editMode && (
                 <button
                   className="logo-settings-btn"
-                  onClick={() => setShowLogoSettings(true)}
+                  onClick={() => {
+                    // Initialize temp state with current value
+                    setTempLogoOpacity(content.about.logoOpacity || 1);
+                    setShowLogoSettings(true);
+                  }}
                   title="Adjust logo transparency"
                 >
                   🎨
@@ -721,7 +736,10 @@ const ModernHome = () => {
 
       {/* Overlay Settings Modal */}
       {showOverlaySettings && (
-        <div className="modal-overlay" onClick={() => setShowOverlaySettings(false)}>
+        <div className="modal-overlay" onClick={() => {
+          setTempOverlaySettings(null);
+          setShowOverlaySettings(false);
+        }}>
           <div className="modal-content overlay-settings-modal" onClick={(e) => e.stopPropagation()}>
             <h3>Hero Overlay Settings</h3>
             <div className="overlay-controls">
@@ -731,7 +749,7 @@ const ModernHome = () => {
                   <input
                     type="color"
                     value={overlaySettings.color1}
-                    onChange={(e) => updateContent('hero', 'overlayColor1', e.target.value)}
+                    onChange={(e) => setTempOverlaySettings({ ...overlaySettings, color1: e.target.value })}
                   />
                   <span>{overlaySettings.color1}</span>
                 </div>
@@ -742,7 +760,7 @@ const ModernHome = () => {
                   <input
                     type="color"
                     value={overlaySettings.color2}
-                    onChange={(e) => updateContent('hero', 'overlayColor2', e.target.value)}
+                    onChange={(e) => setTempOverlaySettings({ ...overlaySettings, color2: e.target.value })}
                   />
                   <span>{overlaySettings.color2}</span>
                 </div>
@@ -753,7 +771,7 @@ const ModernHome = () => {
                   <input
                     type="color"
                     value={overlaySettings.color3}
-                    onChange={(e) => updateContent('hero', 'overlayColor3', e.target.value)}
+                    onChange={(e) => setTempOverlaySettings({ ...overlaySettings, color3: e.target.value })}
                   />
                   <span>{overlaySettings.color3}</span>
                 </div>
@@ -766,7 +784,7 @@ const ModernHome = () => {
                   max="1"
                   step="0.05"
                   value={overlaySettings.opacity}
-                  onChange={(e) => updateContent('hero', 'overlayOpacity', parseFloat(e.target.value))}
+                  onChange={(e) => setTempOverlaySettings({ ...overlaySettings, opacity: parseFloat(e.target.value) })}
                   className="opacity-slider"
                 />
               </div>
@@ -774,7 +792,15 @@ const ModernHome = () => {
                 <p>Preview</p>
               </div>
             </div>
-            <button className="close-modal-btn" onClick={() => setShowOverlaySettings(false)}>
+            <button className="close-modal-btn" onClick={() => {
+              // Save all settings to content
+              updateContent('hero', 'overlayColor1', overlaySettings.color1);
+              updateContent('hero', 'overlayColor2', overlaySettings.color2);
+              updateContent('hero', 'overlayColor3', overlaySettings.color3);
+              updateContent('hero', 'overlayOpacity', overlaySettings.opacity);
+              setTempOverlaySettings(null);
+              setShowOverlaySettings(false);
+            }}>
               Done
             </button>
           </div>
@@ -783,7 +809,10 @@ const ModernHome = () => {
 
       {/* Logo Opacity Settings Modal */}
       {showLogoSettings && (
-        <div className="modal-overlay" onClick={() => setShowLogoSettings(false)}>
+        <div className="modal-overlay" onClick={() => {
+          setTempLogoOpacity(null);
+          setShowLogoSettings(false);
+        }}>
           <div className="modal-content overlay-settings-modal" onClick={(e) => e.stopPropagation()}>
             <h3>Logo Transparency</h3>
             <div className="overlay-controls">
@@ -795,7 +824,7 @@ const ModernHome = () => {
                   max="1"
                   step="0.05"
                   value={logoOpacity}
-                  onChange={(e) => updateContent('about', 'logoOpacity', parseFloat(e.target.value))}
+                  onChange={(e) => setTempLogoOpacity(parseFloat(e.target.value))}
                   className="opacity-slider"
                 />
               </div>
@@ -807,7 +836,12 @@ const ModernHome = () => {
                 />
               </div>
             </div>
-            <button className="close-modal-btn" onClick={() => setShowLogoSettings(false)}>
+            <button className="close-modal-btn" onClick={() => {
+              // Save logo opacity to content
+              updateContent('about', 'logoOpacity', logoOpacity);
+              setTempLogoOpacity(null);
+              setShowLogoSettings(false);
+            }}>
               Done
             </button>
           </div>
