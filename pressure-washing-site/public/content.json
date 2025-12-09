@@ -1,6 +1,6 @@
 {
   "hero": {
-    "title": "Professional Pressure Washing Services",
+    "title": "Professional Pressure Washing",
     "subtitle": "Transform Your Property with Expert Cleaning",
     "backgroundImage": "https://i.ibb.co/V0ZzGRBV/d7ee3025899d.webp"
   },
@@ -39,29 +39,13 @@
   "gallery": {
     "title": "Our Work",
     "subtitle": "See the difference professional pressure washing makes",
-    "images": [
-      {
-        "id": 1,
-        "url": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=600&q=80",
-        "caption": "Beautiful Home Exterior Washing"
-      },
-      {
-        "id": 2,
-        "url": "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&q=80",
-        "caption": "Professional Driveway Cleaning"
-      },
-      {
-        "id": 3,
-        "url": "https://images.unsplash.com/photo-1628744448840-55bdb2497bd4?w=600&q=80",
-        "caption": "Deck Restoration Project"
-      }
-    ]
+    "images": []
   },
   "contact": {
     "title": "Get A Free Quote",
     "subtitle": "Contact us today for a free estimate",
-    "address": "Serving Johnston County, NC\nand surrounding areas",
-    "phone": "(919) 555-WASH",
+    "address": "Serving Forsyth County, NC<br>and surrounding areas",
+    "phone": "(336) 972 7671",
     "hours": "Monday - Saturday: 8:00 AM - 6:00 PM"
   },
   "navbar": {
