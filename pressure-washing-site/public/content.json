@@ -1,6 +1,6 @@
 {
   "hero": {
-    "title": "Professional Pressure Washing",
+    "title": "Professional Pressure Washing Services",
     "subtitle": "Transform Your Property with Expert Cleaning",
     "backgroundImage": "https://i.ibb.co/V0ZzGRBV/d7ee3025899d.webp"
   },
@@ -16,7 +16,7 @@
     "items": [
       {
         "id": 1,
-        "title": "Driveway",
+        "title": "Residential Cleaning",
         "description": "House washing, driveway cleaning, and deck restoration\n\nRoof cleaning and gutter brightening\n\nFence and patio pressure washing for a fresh look"
       },
       {
@@ -27,7 +27,7 @@
       {
         "id": 3,
         "title": "Soft Washing!",
-        "description": "Gentle cleaning for delicate surfaces like siding and roofs\n\nEco-friendly solutions that kill mold, mildew, and algae\n\nLong-lasting results without high pressure damage"
+        "description": "Gentle cleaning for delicate surfaces like siding and roofs!<br><br>Eco-friendly solutions that kill mold, mildew, and algae!<br><br>Long-lasting results without high pressure damage"
       },
       {
         "id": 4,
