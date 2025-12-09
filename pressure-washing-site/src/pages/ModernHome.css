@@ -752,19 +752,35 @@
   z-index: 10000;
   max-width: 600px;
   width: 90%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   border: 3px solid white;
+  overflow: hidden;
 }
 
 .card-back .rte-toolbar {
   background: rgba(255, 255, 255, 0.95);
+  flex-shrink: 0;
 }
 
 .card-back .rte-content {
   background: white;
   color: #1a202c;
-  min-height: 200px;
-  max-height: 400px;
+  min-height: 150px;
+  max-height: none;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.card-back .rte-actions {
+  flex-shrink: 0;
+  position: sticky;
+  bottom: 0;
+  background: #f7fafc;
+  border-top: 1px solid #e2e8f0;
+  z-index: 10;
 }
 
 /* Add overlay backdrop when editing card text */
