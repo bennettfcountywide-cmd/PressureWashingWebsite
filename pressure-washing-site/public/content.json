@@ -2,7 +2,8 @@
   "hero": {
     "title": "Professional Pressure Washing",
     "subtitle": "Transform Your Property with Expert Cleaning",
-    "backgroundImage": "https://i.ibb.co/V0ZzGRBV/d7ee3025899d.webp"
+    "backgroundImage": "https://i.ibb.co/V0ZzGRBV/d7ee3025899d.webp",
+    "overlayOpacity": 0.05
   },
   "about": {
     "title": "About CountyWide Pressure Washing",
