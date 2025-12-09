@@ -16,14 +16,19 @@ const defaultContent = {
   hero: {
     title: 'CountyWide Pressure Washing',
     subtitle: 'Professional Pressure Washing Services',
-    backgroundImage: 'https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=1920&q=80'
+    backgroundImage: 'https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=1920&q=80',
+    overlayColor1: '#7CB342',
+    overlayColor2: '#00D9FF',
+    overlayColor3: '#558B2F',
+    overlayOpacity: 0.35
   },
   about: {
     title: 'About Us',
     subtitle: 'Your Trusted Pressure Washing Professionals',
     text1: 'CountyWide Pressure Washing provides professional pressure washing services for residential and commercial properties. We use state-of-the-art equipment and eco-friendly cleaning solutions to deliver exceptional results.',
     text2: 'Our experienced team is dedicated to restoring and maintaining the beauty of your property. From driveways and sidewalks to building exteriors and decks, we handle it all with precision and care.',
-    image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80'
+    image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80',
+    logoOpacity: 1
   },
   services: {
     title: 'Our Services',

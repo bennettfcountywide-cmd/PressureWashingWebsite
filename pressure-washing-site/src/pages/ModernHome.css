@@ -4,6 +4,11 @@
   overflow-x: hidden;
 }
 
+/* Hero Section Wrapper */
+.hero-section-wrapper {
+  position: relative;
+}
+
 /* Hero Section with Enhanced Animations */
 .modern-hero {
   min-height: 70vh;
@@ -422,9 +427,9 @@
 /* Overlay Settings Styles */
 .overlay-settings-btn {
   position: absolute;
-  top: 70px;
+  top: 100px;
   right: 20px;
-  z-index: 10;
+  z-index: 100;
   padding: 0.75rem 1.5rem;
   background: rgba(255, 255, 255, 0.95);
   color: #7CB342;
@@ -436,6 +441,7 @@
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  pointer-events: auto;
 }
 
 .overlay-settings-btn:hover {

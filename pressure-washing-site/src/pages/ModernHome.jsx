@@ -30,7 +30,7 @@ import ServiceCard3D from '../components/ServiceCard3D';
 import './ModernHome.css';
 
 const ModernHome = () => {
-  const { content, editMode, addServiceItem } = useWebsiteContent();
+  const { content, editMode, addServiceItem, updateContent } = useWebsiteContent();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -47,14 +47,18 @@ const ModernHome = () => {
   const [serviceIcons, setServiceIcons] = useState([faHouse, faBuilding, faSprayCanSparkles, faScrewdriverWrench]);
   const [showAddService, setShowAddService] = useState(false);
   const [showOverlaySettings, setShowOverlaySettings] = useState(false);
-  const [overlaySettings, setOverlaySettings] = useState({
-    color1: '#7CB342',
-    color2: '#00D9FF',
-    color3: '#558B2F',
-    opacity: 0.35
-  });
-  const [logoOpacity, setLogoOpacity] = useState(1);
   const [showLogoSettings, setShowLogoSettings] = useState(false);
+
+  // Get overlay settings from content
+  const overlaySettings = {
+    color1: content.hero.overlayColor1 || '#7CB342',
+    color2: content.hero.overlayColor2 || '#00D9FF',
+    color3: content.hero.overlayColor3 || '#558B2F',
+    opacity: content.hero.overlayOpacity || 0.35
+  };
+
+  // Get logo opacity from content
+  const logoOpacity = content.about.logoOpacity || 1;
   const prefersReducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll();
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 300]);
@@ -237,104 +241,109 @@ const ModernHome = () => {
       <FloatingButton />
 
       {/* Hero Section */}
-      <EditableBackgroundImage
-        section="hero"
-        field="backgroundImage"
-        className="modern-hero"
-        style={{
-          transform: `translateY(${scrollY * 0.5}px)`
-        }}
-      >
-        {/* Floating particles */}
-        <div className="hero-particles">
-          {[...Array(20)].map((_, i) => (
+      <div className="hero-section-wrapper">
+        <EditableBackgroundImage
+          section="hero"
+          field="backgroundImage"
+          className="modern-hero"
+          style={{
+            transform: `translateY(${scrollY * 0.5}px)`
+          }}
+        >
+          {/* Floating particles */}
+          <div className="hero-particles">
+            {[...Array(20)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="particle"
+                initial={{
+                  opacity: 0,
+                  y: 100,
+                  x: Math.random() * 100 - 50
+                }}
+                animate={{
+                  opacity: [0, 0.6, 0],
+                  y: -200,
+                  x: Math.random() * 100 - 50
+                }}
+                transition={{
+                  duration: 3 + Math.random() * 2,
+                  delay: Math.random() * 3,
+                  repeat: Infinity,
+                  ease: "easeOut"
+                }}
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  bottom: 0
+                }}
+              />
+            ))}
+          </div>
+
+          <div className="hero-content" style={{ transform: `translateY(${scrollY * 0.3}px)` }}>
             <motion.div
-              key={i}
-              className="particle"
-              initial={{
-                opacity: 0,
-                y: 100,
-                x: Math.random() * 100 - 50
-              }}
-              animate={{
-                opacity: [0, 0.6, 0],
-                y: -200,
-                x: Math.random() * 100 - 50
-              }}
+              className="hero-text"
+              initial={{ opacity: 0, scale: 0.9, y: 50 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{
-                duration: 3 + Math.random() * 2,
-                delay: Math.random() * 3,
-                repeat: Infinity,
-                ease: "easeOut"
+                duration: 1.2,
+                delay: 0.2,
+                type: "spring",
+                stiffness: 100
               }}
-              style={{
-                left: `${Math.random() * 100}%`,
-                bottom: 0
-              }}
-            />
-          ))}
-        </div>
-
-        <div className="hero-content" style={{ transform: `translateY(${scrollY * 0.3}px)` }}>
-          <motion.div
-            className="hero-text"
-            initial={{ opacity: 0, scale: 0.9, y: 50 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{
-              duration: 1.2,
-              delay: 0.2,
-              type: "spring",
-              stiffness: 100
-            }}
-          >
-            {/* Typewriter effect for title */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <EditableText section="hero" field="title" as="h1" className="hero-title">
-                {content.hero.title}
-              </EditableText>
+              {/* Typewriter effect for title */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+              >
+                <EditableText section="hero" field="title" as="h1" className="hero-title">
+                  {content.hero.title}
+                </EditableText>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+              >
+                <EditableText section="hero" field="subtitle" as="p" className="hero-subtitle">
+                  {content.hero.subtitle}
+                </EditableText>
+              </motion.div>
+              <RippleEffect
+                className="hero-cta"
+                onClick={() => {
+                  const contact = document.getElementById('contact');
+                  contact?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                Get Started →
+              </RippleEffect>
             </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-            >
-              <EditableText section="hero" field="subtitle" as="p" className="hero-subtitle">
-                {content.hero.subtitle}
-              </EditableText>
-            </motion.div>
-            <RippleEffect
-              className="hero-cta"
-              onClick={() => {
-                const contact = document.getElementById('contact');
-                contact?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              Get Started →
-            </RippleEffect>
-          </motion.div>
-        </div>
-        <div className="hero-overlay animated-gradient" style={getOverlayStyle()}></div>
+          </div>
+          <div className="hero-overlay animated-gradient" style={getOverlayStyle()}></div>
 
-        {/* Overlay Settings Button (only visible in edit mode) */}
+          {/* Wave divider at bottom of hero */}
+          <div className="hero-wave">
+            <WaveDivider color="gray" />
+          </div>
+        </EditableBackgroundImage>
+
+        {/* Overlay Settings Button (only visible in edit mode) - OUTSIDE EditableBackgroundImage */}
         {editMode && (
           <button
             className="overlay-settings-btn"
-            onClick={() => setShowOverlaySettings(true)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowOverlaySettings(true);
+            }}
             title="Edit overlay settings"
           >
             🎨 Edit Overlay
           </button>
         )}
-
-        {/* Wave divider at bottom of hero */}
-        <div className="hero-wave">
-          <WaveDivider color="gray" />
-        </div>
-      </EditableBackgroundImage>
+      </div>
 
       {/* About Section */}
       <section id="about" className="modern-about">
@@ -722,7 +731,7 @@ const ModernHome = () => {
                   <input
                     type="color"
                     value={overlaySettings.color1}
-                    onChange={(e) => setOverlaySettings({ ...overlaySettings, color1: e.target.value })}
+                    onChange={(e) => updateContent('hero', 'overlayColor1', e.target.value)}
                   />
                   <span>{overlaySettings.color1}</span>
                 </div>
@@ -733,7 +742,7 @@ const ModernHome = () => {
                   <input
                     type="color"
                     value={overlaySettings.color2}
-                    onChange={(e) => setOverlaySettings({ ...overlaySettings, color2: e.target.value })}
+                    onChange={(e) => updateContent('hero', 'overlayColor2', e.target.value)}
                   />
                   <span>{overlaySettings.color2}</span>
                 </div>
@@ -744,7 +753,7 @@ const ModernHome = () => {
                   <input
                     type="color"
                     value={overlaySettings.color3}
-                    onChange={(e) => setOverlaySettings({ ...overlaySettings, color3: e.target.value })}
+                    onChange={(e) => updateContent('hero', 'overlayColor3', e.target.value)}
                   />
                   <span>{overlaySettings.color3}</span>
                 </div>
@@ -757,7 +766,7 @@ const ModernHome = () => {
                   max="1"
                   step="0.05"
                   value={overlaySettings.opacity}
-                  onChange={(e) => setOverlaySettings({ ...overlaySettings, opacity: parseFloat(e.target.value) })}
+                  onChange={(e) => updateContent('hero', 'overlayOpacity', parseFloat(e.target.value))}
                   className="opacity-slider"
                 />
               </div>
@@ -786,7 +795,7 @@ const ModernHome = () => {
                   max="1"
                   step="0.05"
                   value={logoOpacity}
-                  onChange={(e) => setLogoOpacity(parseFloat(e.target.value))}
+                  onChange={(e) => updateContent('about', 'logoOpacity', parseFloat(e.target.value))}
                   className="opacity-slider"
                 />
               </div>
