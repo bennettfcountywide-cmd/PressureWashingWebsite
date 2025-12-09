@@ -78,7 +78,7 @@ const EditableText = ({ section, field, as = 'p', className = '', multiline = fa
     }
 
     return (
-      <div className="editable-text-editor">
+      <div className="editable-text-editor" onClick={(e) => e.stopPropagation()}>
         <input
           type="text"
           value={editValue}

@@ -75,7 +75,7 @@ const RichTextEditor = ({ value, onChange, onSave, onCancel, saving, maxCharacte
   };
 
   return (
-    <div className="rich-text-editor">
+    <div className="rich-text-editor" onClick={(e) => e.stopPropagation()}>
       <div className="rte-toolbar">
         <button
           type="button"
