@@ -16,18 +16,18 @@
     "items": [
       {
         "id": 1,
-        "title": "Driveway",
+        "title": "Residential Cleaning",
         "description": "House washing, driveway cleaning, and deck restoration\n\nRoof cleaning and gutter brightening\n\nFence and patio pressure washing for a fresh look"
       },
       {
         "id": 2,
         "title": "Commercial Cleaning",
-        "description": "Building exterior washing and storefront cleaning\n\nParking lot and sidewalk maintenance\n\nGraffiti removal and property management services"
+        "description": "Building exterior washing and storefront cleaning<br><br>Parking lot and sidewalk maintenance.<br><br>Graffiti removal and property management services"
       },
       {
         "id": 3,
         "title": "Soft Washing!",
-        "description": "Gentle cleaning for delicate surfaces like siding and roofs\n\nEco-friendly solutions that kill mold, mildew, and algae\n\nLong-lasting results without high pressure damage"
+        "description": "<ul><li>Gentle cleaning for delicate surfaces like siding and roofs.&nbsp;</li><li>Eco-friendly solutions that kill mold, mildew, and algae&nbsp;</li><li>Long-lasting results without high pressure damage</li></ul>"
       },
       {
         "id": 4,
