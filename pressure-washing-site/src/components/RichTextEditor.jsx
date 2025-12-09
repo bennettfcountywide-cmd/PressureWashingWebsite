@@ -1,9 +1,19 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import './RichTextEditor.css';
 
 const RichTextEditor = ({ value, onChange, onSave, onCancel, saving }) => {
   const editorRef = useRef(null);
   const [isPreview, setIsPreview] = useState(false);
+  const isInitialized = useRef(false);
+
+  // Set initial content only once
+  useEffect(() => {
+    if (editorRef.current && !isInitialized.current) {
+      const convertedHtml = convertTextToHtml(value);
+      editorRef.current.innerHTML = convertedHtml;
+      isInitialized.current = true;
+    }
+  }, []);
 
   const applyFormat = (command, value = null) => {
     document.execCommand(command, false, value);
@@ -133,7 +143,6 @@ const RichTextEditor = ({ value, onChange, onSave, onCancel, saving }) => {
           contentEditable
           className="rte-content"
           onInput={handleInput}
-          dangerouslySetInnerHTML={{ __html: convertTextToHtml(value) }}
           suppressContentEditableWarning
         />
       )}

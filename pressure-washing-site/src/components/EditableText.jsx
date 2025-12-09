@@ -86,6 +86,11 @@ const EditableText = ({ section, field, as = 'p', className = '', multiline = fa
           onKeyDown={handleKeyDown}
           className={`editable-input ${className}`}
           autoFocus
+          onFocus={(e) => {
+            // Move cursor to end on focus
+            const length = e.target.value.length;
+            e.target.setSelectionRange(length, length);
+          }}
         />
         <div className="editable-actions">
           <button onClick={handleSave} disabled={saving} className="save-btn">
